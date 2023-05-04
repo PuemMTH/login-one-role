@@ -18,11 +18,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+// User Create
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+Route::post('/register', [UserController::class, 'store']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/revoke-all-tokens', [AuthController::class, 'revokeAllTokens']);
+    Route::get('/list-tokens', [AuthController::class, 'listTokens']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 });
+
 
 Route::get('login', function () {
     return response()->json([
